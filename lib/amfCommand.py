@@ -20,6 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301 USA
 #
+from __future__ import print_function
 import os
 from lib.Logger import logger
 
@@ -30,9 +31,9 @@ class amfCommand():
         self.transaction_id = 0
         self.args = list()
 
-            
+
 class amfCommands():
-    
+
     def __init__(self):
         self.commands = list()
         self.RTMP = dict()
@@ -41,50 +42,50 @@ class amfCommands():
     #Adds a new amfCommand object
     def add(self, amfCmd):
         self.commands.append(amfCmd)
-    
+
     #Returns the amfCommand object by the name
     def get(self, name):
         for c in self.commands:
             if c.name == name:
                 return c
-                
+
     #Returns the number of the objects
     def count(self):
         return len(self.commands)
-            
+
     #Prints the amf command object
     def parse(self):
-        
+
         try:
-        
+
             #Parsing the "connect" command arguments
             amfCmd = self.get("connect")
-            
+
             for arg in amfCmd.args:
                 if type(arg) == dict:
                     for prop in arg:
                         self.RTMP[prop] = arg[prop]
                 else:
-                
+
                     if type(arg) == str:
                         extra_type = "S:"
                     if type(arg) == bool:
                         extra_type = "B:"
                     if type(arg) == int:
                         extra_type = "N:"
-                    
+
                     self.RTMP["extra"] += extra_type + str(arg) + " "
 
             #Parsing the "play" command arguments
             amfCmd = self.get("play")
-            
+
             for arg in amfCmd.args:
                 if arg:
                     self.RTMP["playPath"] = arg
                     break
 
             self.RTMP["url"] = os.path.join(self.RTMP["tcUrl"], self.RTMP["playPath"])
-        
+
         except Exception as e:
             logger.error("Error during the RTMP properties parsing: %s" % e)
 
@@ -102,13 +103,13 @@ class amfCommands():
     """
     Prints the stream properties using the standard list format """
     def printDefault(self):
-    
+
         self.parse()
         self.printBar()
 
         for prop in ["url", "app", "pageUrl", "swfUrl", "tcUrl", "playPath", "flashVer", "extra"]:
             if self.RTMP.has_key(prop) and len(self.RTMP[prop]) > 0:
-                print "%s: %s" % (prop, self.RTMP[prop])
+                print("%s: %s" % (prop, self.RTMP[prop]))
 
         self.printBar()
 
@@ -119,7 +120,7 @@ class amfCommands():
         self.parse()
         self.printBar()
 
-        print "#EXTINF:0,1, Stream"
+        print("#EXTINF:0,1, Stream")
 
         line = "%s " % self.RTMP["url"]
 
@@ -132,7 +133,7 @@ class amfCommands():
 
         line += " live=1"
 
-        print line
+        print(line)
         self.printBar()
 
     """
@@ -163,7 +164,7 @@ class amfCommands():
 
         if self.RTMP["flashVer"]:
             line += "-f '%s' " % self.RTMP["flashVer"]
-        
+
         if self.RTMP["extra"]:
             line += "-C %s " % self.RTMP["extra"]
 
@@ -176,6 +177,6 @@ class amfCommands():
                 line += "stream.flv"
         else:
             line += "stream.flv"
-        
-        print line
+
+        print(line)
         self.printBar()
