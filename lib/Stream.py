@@ -23,7 +23,7 @@
 from scapy.all import hexdump
 
 class Stream():
-    
+
     def __init__(self, stream = ""):
         self.stream = stream
         self.offset = 0
@@ -35,13 +35,13 @@ class Stream():
     def appendData(self, data):
         self.unmergedData.append(data)
         self.size +=len(data)
-    
+
     #Merges the buffered data into the stream
     def _mergeData(self):
         if self.unmergedData:
             self.stream += ''.join(self.unmergedData)
             self.unmergedData = []
-    
+
     #Prints the stream 
     def dump(self):
         self._mergeData()
