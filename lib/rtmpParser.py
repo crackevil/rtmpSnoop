@@ -56,10 +56,10 @@ class rtmpParser():
 
         if H1 != chr(0x03) or H1_rndData == None or H2_rndData == None:
             return amfCmds
-    
+
         while (stream.haveBytes()):
 
-            amf = self.rtmpParsePacket (stream)        
+            amf = self.rtmpParsePacket (stream)
 
             if amf:
                 amfCmds.add(amf)
@@ -131,8 +131,8 @@ class rtmpParser():
                 else:
                     logger.debug("Expected RTMP magic byte not found in the payload: %d" % n)
                     return None
-            n = n + 1            
-       
+            n = n + 1
+
         """
         Now parsing the payload!
         I will create a new Stream object, containing only the payload, to pass to the
@@ -175,13 +175,13 @@ class rtmpParser():
                 amf.args.append(self.rtmpParseObject(rtmp_payload_stream))
 
             return amf
-        
+
         #Otherwise, I can discard it...
         else:
             logger.debug("Found an unuseful packet type, skypping!: %d" % packet_type)
-            
+
         return None
-        
+
 
     #Parse a single RTMP object
     def rtmpParseObject(self, p):
@@ -229,7 +229,7 @@ class rtmpParser():
 
             #Eating the End Of Object marker
             p.getBytes(3)
-            
+
             return obj
 
         #NULL
@@ -246,7 +246,7 @@ class rtmpParser():
                 pass
             p.getBytes(3)
             return 0
-       
+
         #Unknown object
         else:
             logger.error("Found an unknown RTMP object: 0x%x" % ord(b))
