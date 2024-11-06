@@ -20,7 +20,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301 USA
 #
-from scapy.all import hexdump
+
 
 class Stream():
 
@@ -45,7 +45,7 @@ class Stream():
     #Prints the stream 
     def dump(self):
         self._mergeData()
-        hexdump(self.stream[self.offset:])
+        print(self.stream[self.offset:])
 
     #Gets n bytes from the stream and increments the offset
     def getBytes(self, n):
