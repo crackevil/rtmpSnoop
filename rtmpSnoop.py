@@ -45,7 +45,6 @@ def PacketHandler(pkt):
     global streams
     global rtmp_port
     global out_mode
-    global quit_first
 
     if pkt.haslayer(TCP) and pkt.haslayer(Raw):
 
@@ -84,8 +83,6 @@ def PacketHandler(pkt):
                     logger.info("\n* RTMP Stream found!")
                     amfCmds.printOut(out_mode)
                     streams[sport].dontScanAgain = True
-                    if quit_first:
-                        sys.exit(0)
                 else:
                     streams[sport].offset = 0
 
