@@ -48,7 +48,7 @@ class rtmpParser():
     def rtmpParseStream (self, stream):
 
         amfCmds = amfCommands()
-        
+
         #Looking for the handshake
         H1 = stream.getBytes(1)
         H1_rndData = stream.getBytes(0x600) #1536
@@ -94,7 +94,7 @@ class rtmpParser():
             body_size = Utils.str2num(stream.getBytes(3))
             packet_type = stream.getByte()
             stream_id = Utils.str2num(stream.getBytes(4))
-        
+
         #Header type b01
         elif header_type == 1:
             timestamp = Utils.str2num(stream.getBytes(3))
@@ -216,7 +216,7 @@ class rtmpParser():
 
             #Reading all the object properties, until End Of Object marker is reached
             while (p.readBytes(3) != "\x00\x00\x09"):
-                
+
                 #Property name
                 strlen =  Utils.str2num(p.getBytes(2))
                 key = p.getBytes(strlen)
