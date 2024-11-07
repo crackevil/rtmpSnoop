@@ -20,6 +20,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
 # 02110-1301 USA
 #
+import absimp
+absimp.path_include_cwd(__file__)
 import os
 import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
