@@ -27,7 +27,7 @@ def str2num(s):
     l = 0    
     while (i<len(s)):
         l = l << 8
-        l = l + ord(s[i])
+        l = l + s[i]
         i = i + 1
 
     return l
