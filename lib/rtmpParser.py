@@ -163,7 +163,7 @@ class rtmpParser():
             amf.name = self.rtmpParseObject(rtmp_payload_stream)
 
             #We are interested only in "connect" and "play" objects for our purpose
-            if amf.name not in ["connect","play"]:
+            if amf.name not in [b"connect",b"play"]:
                 logger.debug("Found an unuseful command, skypping!: %s" % amf.name)
                 return None
 
@@ -215,7 +215,7 @@ class rtmpParser():
             obj = dict()
 
             #Reading all the object properties, until End Of Object marker is reached
-            while (p.readBytes(3) != "\x00\x00\x09"):
+            while (p.readBytes(3) != b"\x00\x00\x09"):
 
                 #Property name
                 strlen =  Utils.str2num(p.getBytes(2))
