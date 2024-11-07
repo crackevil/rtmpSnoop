@@ -21,7 +21,7 @@
 # 02110-1301 USA
 #
 import struct
-import Utils
+from . import Utils
 from lib.Stream import Stream
 from lib.amfCommand import amfCommand, amfCommands
 from lib.Logger import logger
