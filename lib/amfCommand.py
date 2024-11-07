@@ -59,7 +59,7 @@ class amfCommands():
         try:
 
             #Parsing the "connect" command arguments
-            amfCmd = self.get("connect")
+            amfCmd = self.get(b"connect")
 
             for arg in amfCmd.args:
                 if type(arg) == dict:
@@ -74,20 +74,20 @@ class amfCommands():
                     if type(arg) == int:
                         extra_type = "N:"
 
-                    self.RTMP["extra"] += extra_type + str(arg) + " "
+                    self.RTMP[b"extra"] += extra_type + str(arg) + " "
 
             #Parsing the "play" command arguments
-            amfCmd = self.get("play")
+            amfCmd = self.get(b"play")
 
             for arg in amfCmd.args:
                 if arg:
-                    self.RTMP["playPath"] = arg
+                    self.RTMP[b"playPath"] = arg
                     break
 
-            self.RTMP["url"] = os.path.join(self.RTMP["tcUrl"], self.RTMP["playPath"])
+            self.RTMP[b"url"] = os.path.join(self.RTMP[b"tcUrl"], self.RTMP[b"playPath"])
 
         except Exception as e:
-            logger.error("Error during the RTMP properties parsing: %s" % e)
+            logger.exception(e)
 
     def printBar(self):
         logger.info("*************************************")
@@ -107,8 +107,8 @@ class amfCommands():
         self.parse()
         self.printBar()
 
-        for prop in ["url", "app", "pageUrl", "swfUrl", "tcUrl", "playPath", "flashVer", "extra"]:
-            if self.RTMP.has_key(prop) and len(self.RTMP[prop]) > 0:
+        for prop in [b"url", b"app", b"pageUrl", b"swfUrl", b"tcUrl", b"playPath", b"flashVer", b"extra"]:
+            if prop in self.RTMP and len(self.RTMP[prop]) > 0:
                 print("%s: %s" % (prop, self.RTMP[prop]))
 
         self.printBar()
@@ -124,12 +124,12 @@ class amfCommands():
 
         line = "%s " % self.RTMP["url"]
 
-        for prop in ["app", "pageUrl", "swfUrl", "tcUrl", "playPath"]:
-            if self.RTMP.has_key(prop):
+        for prop in [b"app", b"pageUrl", b"swfUrl", b"tcUrl", b"playPath"]:
+            if prop in self.RTMP:
                 line += "%s=%s " % (prop, self.RTMP[prop])
 
-        if self.RTMP.has_key("extra"):
-            line += "conn=%s" % self.RTMP["extra"]
+        if "extra" in self.RTMP:
+            line += "conn=%s" % self.RTMP[b"extra"]
 
         line += " live=1"
 
@@ -143,34 +143,34 @@ class amfCommands():
         self.parse()
         self.printBar()
 
-        line = "rtmpdump -r '%s' " % self.RTMP["url"]
+        line = "rtmpdump -r '%s' " % self.RTMP[b"url"]
 
-        if self.RTMP["app"]:
-            line += "-a '%s' " % self.RTMP["app"]
+        if self.RTMP[b"app"]:
+            line += "-a '%s' " % self.RTMP[b"app"]
         else:
             line += "-a '' "
 
-        if self.RTMP["tcUrl"]:
-            line += "-t '%s' " % self.RTMP["tcUrl"]
+        if self.RTMP[b"tcUrl"]:
+            line += "-t '%s' " % self.RTMP[b"tcUrl"]
 
-        if self.RTMP["playPath"]:
-            line += "-y '%s' " % self.RTMP["playPath"]
+        if self.RTMP[b"playPath"]:
+            line += "-y '%s' " % self.RTMP[b"playPath"]
 
-        if self.RTMP["swfUrl"]:
-            line += "-W '%s' " % self.RTMP["swfUrl"]
+        if self.RTMP[b"swfUrl"]:
+            line += "-W '%s' " % self.RTMP[b"swfUrl"]
 
-        if self.RTMP["pageUrl"]:
-            line += "-p '%s' " % self.RTMP["pageUrl"]
+        if self.RTMP[b"pageUrl"]:
+            line += "-p '%s' " % self.RTMP[b"pageUrl"]
 
-        if self.RTMP["flashVer"]:
-            line += "-f '%s' " % self.RTMP["flashVer"]
+        if self.RTMP[b"flashVer"]:
+            line += "-f '%s' " % self.RTMP[b"flashVer"]
 
-        if self.RTMP["extra"]:
-            line += "-C %s " % self.RTMP["extra"]
+        if self.RTMP[b"extra"]:
+            line += "-C %s " % self.RTMP[b"extra"]
 
         line += "--live -o "
-        if self.RTMP["playPath"]:
-            filename = os.path.basename(self.RTMP["playPath"])
+        if self.RTMP[b"playPath"]:
+            filename = os.path.basename(self.RTMP[b"playPath"])
             if filename:
                 line += filename
             else:
