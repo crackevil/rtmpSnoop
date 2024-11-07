@@ -116,7 +116,7 @@ class rtmpParser():
 
         #Now reading the RTMP payload from the stream
         magic_byte = 0xC0 + chunk_stream_id
-        magic_bytes_count = body_size / 128
+        magic_bytes_count = int(body_size / 128)
         rtmp_payload = stream.getBytes(body_size + magic_bytes_count)
 
         if rtmp_payload == None:
