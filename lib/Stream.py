@@ -39,7 +39,7 @@ class Stream():
     #Merges the buffered data into the stream
     def _mergeData(self):
         if self.unmergedData:
-            self.stream += ''.join(self.unmergedData)
+            self.stream += b''.join(self.unmergedData)
             self.unmergedData = []
 
     #Prints the stream 
