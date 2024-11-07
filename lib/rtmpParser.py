@@ -32,12 +32,12 @@ class rtmpParser():
     AMF_COMMAND = 0x14
     AMF3_COMMAND = 0x11
 
-    AMF_STRING = chr(0x02)
-    AMF_NUMBER = chr(0x00)
-    AMF_OBJECT = chr(0x03)
-    AMF_BOOLEAN = chr(0x01)
-    AMF_NULL = chr(0x05)
-    AMF_ARRAY = chr(0x08)
+    AMF_STRING = b'\x02'
+    AMF_NUMBER = b'\x00'
+    AMF_OBJECT = b'\x03'
+    AMF_BOOLEAN = b'\x01'
+    AMF_NULL = b'\x05'
+    AMF_ARRAY = b'\x08'
 
     def __init__ (self):
         pass
@@ -54,7 +54,7 @@ class rtmpParser():
         H1_rndData = stream.getBytes(0x600) #1536
         H2_rndData = stream.getBytes(0x600)
 
-        if H1 != chr(0x03) or H1_rndData == None or H2_rndData == None:
+        if H1 != b'\x03' or H1_rndData == None or H2_rndData == None:
             return amfCmds
 
         while (stream.haveBytes()):
@@ -205,7 +205,7 @@ class rtmpParser():
 
         #BOOLEAN
         elif (b == self.AMF_BOOLEAN):
-            boolean = False if (p.getBytes(1) == chr(0)) else True
+            boolean = False if (p.getBytes(1) == b'\x00') else True
             logger.debug("Found a boolean (%s)..." % boolean)
             return boolean
 
