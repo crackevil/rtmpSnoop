@@ -91,7 +91,7 @@ def PacketHandler(pkt):
                 logger.debug("No more bytes to read from the stream!")
 
             except Exception as e:
-                logger.error("Error parsing the RTMP stream: %s" % e)
+                logger.exception(e)
 
 
 """
