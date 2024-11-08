@@ -24,7 +24,7 @@
 
 class Stream():
 
-    def __init__(self, stream = ""):
+    def __init__(self, stream = b""):
         self.stream = stream
         self.offset = 0
         self.size = len(stream)
@@ -59,7 +59,7 @@ class Stream():
 
     #Get a single byte from the stream
     def getByte(self):
-        return ord(self.getBytes(1))
+        return self.getBytes(1)[0]
 
     #Reads n bytes from the stream without incrementing the offset
     def readBytes(self, n):
