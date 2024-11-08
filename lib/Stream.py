@@ -22,7 +22,7 @@
 #
 
 
-class Stream():
+class Stream1():
 
     def __init__(self, stream = b""):
         self.stream = stream
@@ -80,3 +80,72 @@ class Stream():
 class StreamNoMoreBytes(Exception):
     pass
 
+import contextlib
+import io
+
+class Stream2(io.BytesIO):
+
+    def __init__(self, stream = b""):
+        super(Stream2, self).__init__(stream)
+
+        self.dontScanAgain = False
+
+    @property
+    def offset(self):
+        return self.tell()
+
+    @offset.setter
+    def offset(self, off):
+        self.seek(off, io.SEEK_SET)
+
+    @property
+    def size(self):
+        return len(self.getvalue())
+
+    @contextlib.contextmanager
+    def keep_pos(self):
+        pos0 = self.tell()
+        try:
+            yield 1
+        finally:
+            self.seek(pos0, io.SEEK_SET)
+
+    #Appends new data to the buffer
+    def appendData(self, data):
+        with self.keep_pos():
+            self.seek(0, io.SEEK_END)
+            self.write(data)
+
+    #Prints the stream 
+    def dump(self):
+        print(self.readBytes(-1))
+
+    #Gets n bytes from the stream and increments the offset
+    def getBytes(self, n):
+        if n > 0 and self.tell() + n> self.size:
+            raise StreamNoMoreBytes
+
+        return self.read(n)
+
+    #Get a single byte from the stream
+    def getByte(self):
+        return self.getBytes(1)[0]
+
+    #Reads n bytes from the stream without incrementing the offset
+    def readBytes(self, n):
+        with self.keep_pos():
+            bytes = self.read(n)
+            if n > 0 and len(bytes) < n:
+                return None
+
+            return bytes
+
+    #Returns True if there are bytes to be read, False otherwise
+    def haveBytes(self):
+        if self.tell() >= self.size:
+            return False
+        else:
+            return True
+
+
+Stream = Stream2
