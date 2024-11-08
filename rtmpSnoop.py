@@ -25,8 +25,8 @@ absimp.path_include_cwd(__file__)
 import os
 import logging
 logging.getLogger("scapy.runtime").setLevel(logging.ERROR)
-from scapy.all import *
-from lib.Stream import *
+from scapy.all import sniff, TCP, Raw
+from lib.Stream import Stream
 from lib.rtmpParser import rtmpParser
 from lib.amfCommand import amfCommand, amfCommands
 from lib.Logger import logger
@@ -86,9 +86,6 @@ def PacketHandler(pkt):
                 else:
                     streams[sport].offset = 0
 
-            except StreamNoMoreBytes:
-                logger.debug("No more bytes to read from the stream!")
-
             except Exception as e:
                 logger.exception(e)
 
@@ -145,25 +142,5 @@ if __name__ == "__main__":
         logger.info("Reading packets from dump file '%s'..." % args.pcapfile)
         sniff(offline=args.pcapfile, filter="tcp", prn = PacketHandler)
 
-    #Sniffing on the specified device
-    elif args.device:
-        logger.info("Starting sniffing on %s..." % args.device)
-        try:
-            sniff(iface=args.device, prn = PacketHandler, store = 0)
-        except socket.error as e:
-            logger.error("Error opening %s for sniffing: %s" % (args.device, e))
-            logger.info("Are you root and the device is correct?")
-            sys.exit(1)
-
-    #Default action, sniffing on all the devices
-    else:
-        logger.info("Starting sniffing on all devices...")
-        try:
-            sniff(prn = PacketHandler, store = 0)
-        except socket.error as e:
-            logger.error("Error opening device for sniffing: %s" % e)
-            logger.info("Are you root?")
-            sys.exit(1)
-    
 
 
