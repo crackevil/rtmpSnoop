@@ -126,7 +126,7 @@ class rtmpParser():
         n = 0
         while (n<len(rtmp_payload)):
             if (n % 128 == 0) and (n != 0):
-                if rtmp_payload[n] == chr(magic_byte):
+                if rtmp_payload[n] == magic_byte:
                     rtmp_payload = rtmp_payload[:n] + rtmp_payload[n+1:]
                 else:
                     logger.debug("Expected RTMP magic byte not found in the payload: %d" % n)
@@ -242,7 +242,7 @@ class rtmpParser():
         elif (b == self.AMF_ARRAY):
             arraylen =  Utils.str2num(p.getBytes(4))
             logger.debug("Found an array...")
-            while (p.readBytes(3) != "\x00\x00\x09"):
+            while (p.readBytes(3) != b"\x00\x00\x09"):
                 pass
             p.getBytes(3)
             return 0
