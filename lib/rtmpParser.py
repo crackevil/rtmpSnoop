@@ -25,7 +25,6 @@ from . import Utils
 from lib.Stream import Stream
 from lib.amfCommand import amfCommand, amfCommands
 from lib.Logger import logger
-from scapy.all import *
 
 class rtmpParser():
 
