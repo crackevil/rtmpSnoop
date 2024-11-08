@@ -29,15 +29,15 @@ class amfCommand():
     def __init__(self):
         self.name = ""
         self.transaction_id = 0
-        self.args = list()
+        self.args = []
 
 
 class amfCommands():
 
     def __init__(self):
-        self.commands = list()
-        self.RTMP = dict()
-        self.RTMP["extra"] = ""
+        self.commands = []
+        self.RTMP = {}
+        self.RTMP[b"extra"] = ""
 
     #Adds a new amfCommand object
     def add(self, amfCmd):
