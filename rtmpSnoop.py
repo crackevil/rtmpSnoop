@@ -68,7 +68,7 @@ def PacketHandler(pkt):
 
         if streams[sport].dontScanAgain:
             return
-        
+
         #This is the mininium size that an RTMP stream must have to contains interesting data...
         if streams[sport].size > 0x600*2:
             logger.debug("Dissecting stream: %s" % sport)
