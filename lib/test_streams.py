@@ -1,7 +1,7 @@
 import absimp
 absimp.path_include_cwd(__file__)
 import unittest
-from Stream import Stream1, Stream2
+from .Stream import Stream1, Stream2
 
 
 class base_test_stream(unittest.TestCase):
